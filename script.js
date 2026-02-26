@@ -85,13 +85,13 @@ function initializeSearch() {
     if (!searchContainer) return;
 
     const searchHtml = `
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #00ff00;">
-            <h3 style="margin-bottom: 15px;">>>> SEARCH_SKILLS</h3>
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e6ff;">
+            <h3 style="margin-bottom: 15px; color: #2a5298;">Search Skills</h3>
             <input 
                 type="text" 
                 class="terminal-input" 
                 id="skillSearch" 
-                placeholder=">> Search for a skill..."
+                placeholder="Search for a skill..."
             />
             <div class="search-results" id="searchResults"></div>
         </div>
@@ -121,7 +121,7 @@ function initializeSearch() {
         filtered.forEach(skill => {
             const resultItem = document.createElement('div');
             resultItem.className = 'result-item';
-            resultItem.innerHTML = `>> Found: <strong>${skill}</strong>`;
+            resultItem.innerHTML = `<strong>${skill}</strong>`;
             resultItem.addEventListener('click', () => {
                 searchInput.value = skill;
                 searchResults.innerHTML = '';
@@ -203,15 +203,15 @@ function animateSections() {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    // Press 'S' to focus on search
-    if (e.key === 's' && e.altKey) {
+    // Press 'S' to focus on search (only with Ctrl)
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         const searchInput = document.getElementById('skillSearch');
         if (searchInput) searchInput.focus();
     }
     
-    // Press 'H' to scroll to header
-    if (e.key === 'h' && e.altKey) {
+    // Press 'H' to scroll to header (only with Ctrl)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
         e.preventDefault();
         document.querySelector('header').scrollIntoView({ behavior: 'smooth' });
     }
