@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviel Cohen - DevOps Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+            50% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            color: #00ff00;
+            background-color: #000000;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.03) 0px,
+                rgba(0, 255, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1;
+            animation: flicker 0.15s infinite;
+        }
+
+        header {
+            background-color: #001a00;
+            color: #00ff00;
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 3px solid #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) inset;
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: glow 2s infinite;
+            letter-spacing: 3px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        nav {
+            background-color: #000000;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            display: block;
+            color: #00ff00;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: all 0.3s;
+            text-shadow: 0 0 3px #00ff00;
+            border-right: 1px solid #00ff00;
+        }
+
+        nav li:last-child a {
+            border-right: none;
+        }
+
+        nav a:hover {
+            background-color: #001a00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            font-weight: bold;
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            background: #000000;
+            margin: 20px 0;
+            padding: 30px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2), inset 0 0 10px rgba(0, 255, 0, 0.05);
+            position: relative;
+        }
+
+        section h2 {
+            color: #00ff00;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
+            text-shadow: 0 0 10px #00ff00;
+            letter-spacing: 2px;
+        }
+
+        .skill-category {
+            margin-bottom: 20px;
+        }
+
+        .skill-category h3 {
+            color: #00ff00;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #00ff00;
+            letter-spacing: 1px;
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .skill-badge {
+            background-color: #001a00;
+            color: #00ff00;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            text-align: center;
+            font-weight: 500;
+            text-shadow: 0 0 5px #00ff00;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .skill-badge:hover {
+            background-color: #003300;
+            text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            transform: translate(-2px, -2px);
+        }
+
+        .experience-item, .project-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .experience-item:last-child, .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .experience-item h3, .project-item h3 {
+            color: #00ff00;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px #00ff00;
+            letter-spacing: 1px;
+        }
+
+        .experience-item .position, .project-item .tech {
+            color: #00ff00;
+            font-weight: 600;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .date {
+            color: #00aa00;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .experience-item ul li, .project-item p {
+            color: #00dd00;
+            text-shadow: 0 0 3px #00ff00;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .contact-item a {
+            color: #00ff00;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .contact-item a:hover {
+            text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+        }
+
+        footer {
+            background-color: #000000;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                text-align: center;
+                border-right: none;
+                border-bottom: 1px solid #00ff00;
+            }
+
+            nav li:last-child a {
+                border-bottom: none;
+            }
+
+            .skills {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AVIEL COHEN</h1>
+        <p>> DevOps Engineer</p>
+        <p>> Building reliable, scalable infrastructure</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about">
+            <h2>> ABOUT_ME</h2>
+            <p>I am a passionate DevOps Engineer with expertise in designing, implementing, and maintaining scalable cloud infrastructure. With a strong background in automation, containerization, and CI/CD pipelines, I help organizations streamline their deployment processes and ensure high availability and reliability of their systems.</p>
+            <p style="margin-top: 15px;">I believe in infrastructure as code, continuous improvement, and collaborative development practices. My goal is to bridge the gap between development and operations to deliver better software faster.</p>
+        </section>
+
+        <section id="skills">
+            <h2>> TECHNICAL_SKILLS</h2>
+            
+            <div class="skill-category">
+                <h3>>>> Cloud Platforms</h3>
+                <div class="skills">
+                    <div class="skill-badge">AWS</div>
+                    <div class="skill-badge">Azure</div>
+                    <div class="skill-badge">Google Cloud</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>>>> Containerization & Orchestration</h3>
+                <div class="skills">
+                    <div class="skill-badge">Docker</div>
+                    <div class="skill-badge">Kubernetes</div>
+                    <div class="skill-badge">Docker Compose</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>>>> CI/CD Tools</h3>
+                <div class="skills">
+                    <div class="skill-badge">Jenkins</div>
+                    <div class="skill-badge">GitLab CI</div>
+                    <div class="skill-badge">GitHub Actions</div>
+                    <div class="skill-badge">ArgoCD</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>>>> Infrastructure & Configuration</h3>
+                <div class="skills">
+                    <div class="skill-badge">Terraform</div>
+                    <div class="skill-badge">Ansible</div>
+                    <div class="skill-badge">CloudFormation</div>
+                    <div class="skill-badge">Chef</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>>>> Monitoring & Logging</h3>
+                <div class="skills">
+                    <div class="skill-badge">Prometheus</div>
+                    <div class="skill-badge">ELK Stack</div>
+                    <div class="skill-badge">Grafana</div>
+                    <div class="skill-badge">Datadog</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>>>> Programming Languages</h3>
+                <div class="skills">
+                    <div class="skill-badge">Python</div>
+                    <div class="skill-badge">Bash</div>
+                    <div class="skill-badge">Go</div>
+                    <div class="skill-badge">YAML</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>> PROFESSIONAL_EXPERIENCE</h2>
+
+            <div class="experience-item">
+                <h3>Senior DevOps Engineer</h3>
+                <p class="position">Tech Company Inc. | 2022 - Present</p>
+                <p class="date">New York, NY</p>
+                <ul style="margin-left: 20px;">
+                    <li>Led migration of legacy applications to Kubernetes, reducing deployment time by 60%</li>
+                    <li>Designed and implemented CI/CD pipelines using GitLab CI for 15+ microservices</li>
+                    <li>Automated infrastructure provisioning using Terraform, managing 200+ AWS resources</li>
+                    <li>Implemented comprehensive monitoring and alerting using Prometheus and Grafana</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <h3>DevOps Engineer</h3>
+                <p class="position">Digital Solutions Ltd. | 2020 - 2022</p>
+                <p class="date">San Francisco, CA</p>
+                <ul style="margin-left: 20px;">
+                    <li>Containerized 25+ applications using Docker and deployed to AWS ECS</li>
+                    <li>Developed Python automation scripts reducing manual operational tasks by 70%</li>
+                    <li>Managed Jenkins infrastructure and created pipelines for continuous integration</li>
+                    <li>Implemented disaster recovery and backup strategies</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <h3>Junior Systems Administrator</h3>
+                <p class="position">StartUp Ventures | 2019 - 2020</p>
+                <p class="date">Austin, TX</p>
+                <ul style="margin-left: 20px;">
+                    <li>Managed Linux servers and cloud infrastructure on AWS</li>
+                    <li>Assisted in setup and maintenance of development and production environments</li>
+                    <li>Created documentation and runbooks for operational procedures</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>> NOTABLE_PROJECTS</h2>
+
+            <div class="project-item">
+                <h3>Kubernetes Cluster Migration</h3>
+                <p class="tech">>> Kubernetes • Terraform • AWS</p>
+                <p>Successfully migrated a distributed application from VM-based infrastructure to a production-grade Kubernetes cluster, achieving 99.95% uptime and reducing infrastructure costs by 40%.</p>
+            </div>
+
+            <div class="project-item">
+                <h3>Infrastructure as Code Framework</h3>
+                <p class="tech">>> Terraform • Ansible • Python</p>
+                <p>Developed a reusable Terraform and Ansible framework for provisioning and managing complete application stacks in AWS, reducing environment setup time from 2 weeks to 2 hours.</p>
+            </div>
+
+            <div class="project-item">
+                <h3>CI/CD Pipeline Automation</h3>
+                <p class="tech">>> Jenkins • GitLab • Docker</p>
+                <p>Implemented automated CI/CD pipelines with security scanning, automated testing, and multi-environment deployments, enabling the team to release updates 5x faster.</p>
+            </div>
+
+            <div class="project-item">
+                <h3>Observability Stack</h3>
+                <p class="tech">>> Prometheus • Grafana • ELK Stack</p>
+                <p>Built comprehensive monitoring, logging, and alerting infrastructure for microservices, improving incident response time and reducing MTTR by 50%.</p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>> CONTACT_MATRIX</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>EMAIL:</strong>
+                    <a href="mailto:aviel@example.com">aviel@example.com</a>
+                </div>
+                <div class="contact-item">
+                    <strong>LINKEDIN:</strong>
+                    <a href="https://linkedin.com" target="_blank">linkedin.com/in/avielcohen</a>
+                </div>
+                <div class="contact-item">
+                    <strong>GITHUB:</strong>
+                    <a href="https://github.com" target="_blank">github.com/avielcohen</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>> © 2026 AVIEL COHEN | DevOps Matrix Terminal v1.0</p>
+    </footer>
+</body>
+</html>
