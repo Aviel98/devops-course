@@ -1,5 +1,6 @@
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
+    initializeHackerScroll();
     initializeNavigation();
     initializeSkills();
     initializeSearch();
@@ -7,6 +8,37 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeSystemStatus();
     animateSections();
 });
+
+// Hacker scroll text animation
+function initializeHackerScroll() {
+    const hackerChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン█▓▒░╗╝╜╛╔╚╙╘═║╚╝║═╕╖╗╘╙╚╒╓╔☆♠♣♥♦✦✧★▲▼◀▶◆◇◈◉◊○●◎▬▭▮▯'.split('');
+    
+    const scrollTexts = [
+        generateHackerText(120),
+        generateHackerText(140),
+        generateHackerText(160)
+    ];
+    
+    // Create and insert scroll elements
+    scrollTexts.forEach((text, index) => {
+        const scrollDiv = document.createElement('div');
+        scrollDiv.className = `hacker-scroll hacker-scroll-${index + 1}`;
+        scrollDiv.textContent = text;
+        document.body.appendChild(scrollDiv);
+    });
+    
+    function generateHackerText(length) {
+        let text = '';
+        for (let i = 0; i < length; i++) {
+            if (Math.random() > 0.7) {
+                text += ['0x', '[ ]', '{ }', '< >', '|', '/', '\\', '-', '=', '+', '*', '#', '@', '$', '%', '&'][Math.floor(Math.random() * 16)];
+            } else {
+                text += hackerChars[Math.floor(Math.random() * hackerChars.length)];
+            }
+        }
+        return text;
+    }
+}
 
 // Navigation functionality
 function initializeNavigation() {
